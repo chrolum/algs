@@ -95,4 +95,15 @@ public class Percolation
             throw new IllegalArgumentException("col or row is invalid");
         }
     }
+
+    public void StartSimulatie()
+    {
+        while(!this.percolates())
+        {
+            int index = StdRandom.uniform(1, n*n);//
+            int row = index / n;
+            int col = index % n + 1;
+            open(row, col);
+        }
+    }
 }
