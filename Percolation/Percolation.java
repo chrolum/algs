@@ -36,6 +36,7 @@ public class Percolation
 
     public void open(int row, int col)//
     {
+        valided(row, col);
         if (!isOpen(row, col))
         {
             isOpen[row-1][col-1] = true;
@@ -46,30 +47,34 @@ public class Percolation
 
             //check left, right, up, and down;Note the invalid postion
             boolean newSite = false;
-            if (row != n && isOpen(row, col)) {uf.union(realPostion(row, col), realPostion(row+1, col)); newSite = true;}//down
-            if (row != 1 && isOpen(row, col)) {uf.union(realPostion(row, col), realPostion(row-1, col)); newSite = true;}//up
-            if (col != n && isOpen(row, col)) {uf.union(realPostion(row, col), realPostion(row, col+1)); newSite = true;}//right
-            if (row != 1 && isOpen(row, col)) {uf.union(realPostion(row, col), realPostion(row, col-1)); newSite = true;}//down
+            if (row != n && isOpen(row, col)) {uf.union(realPostion(row, col), realPostion(row+1, col));}//down
+            if (row != 1 && isOpen(row, col)) {uf.union(realPostion(row, col), realPostion(row-1, col));}//up
+            if (col != n && isOpen(row, col)) {uf.union(realPostion(row, col), realPostion(row, col+1));}//right
+            if (row != 1 && isOpen(row, col)) {uf.union(realPostion(row, col), realPostion(row, col-1));}//down
 
             //count the opensite
-            if (newSite) {count++;}
+//            if (newSite) {count++;}
+
+            count++;
         }
     }
 
     public boolean isOpen(int row, int col)
     {
+        valided(row, col);
         return isOpen[row-1][col-1];
     }
 
 
     public boolean isFull(int row, int col)
     {
+        valided(row, col);
         return uf.connected(top, realPostion(row, col)) && isOpen(row, col);//if the site is full of water, if has been connected to the top node
     }
 
     public boolean percolates()
     {
-        return uf.connected(n*n, n*n+1);//if the virtual top and bottom node is connected, the system is percolated
+        return uf.connected(top, bottom);//if the virtual top and bottom node is connected, the system is percolated
     }
 
     public int numberOfOpenSites()
@@ -79,6 +84,15 @@ public class Percolation
 
     private int realPostion(int row, int col)//calculate the real index in id array
     {
+        valided(row, col);
         return (row - 1) * n + (col - 1);
+    }
+
+    private void valided(int row, int col)
+    {
+        if (col < 1 || col > n || row < 1 || col > n)
+        {
+            throw new IllegalArgumentException("col or row is invalid");
+        }
     }
 }
