@@ -8,49 +8,60 @@ import edu.princeton.cs.algs4.StdIn;
  **/
 public class PercolationStats
 {
-    private int[] testData;
     private double mean;
     private double stddev;
     private double confidenceLo;
     private double confidenceHi;
-    private int trials;
-
-
 
     public PercolationStats(int n, int trials)
     {
 
-        this.trials = trials;
-        this.testData = new int[trials];//record the trials data
+        int[] testData = new int[trials];//record the trials data
         for (int i = 0; i < trials; i++)//do trials time simulation
         {
             Percolation perc = new Percolation(n);
-            monteCarloSimulation sim = new monteCarloSimulation(perc);
-            testData[i] = sim.getNumberOfOpenSite();
+            testData[i] = perc.getCount();
         }
+
+        //init stats infomation
+        //mean
+        double total = 0.0;
+        for (int i = 0; i < trials; i++)
+        {
+            total += testData[i];
+        }
+        this.mean = total / trials;
+        //stddev
+        total = 0.0;
+        for (int i = 0; i < trials; i++)
+        {
+            total += Math.pow((testData[i] - mean), 2);
+        }
+        this.stddev = total / (trials - 1);
+        //confLo
+        this.confidenceLo = this.mean - 1.96 * Math.sqrt(this.stddev) / Math.sqrt(trials);
+        //confHi
+
     }
 
     public double mean()
     {
-        for (int i = 0; i < testData.length; i++)
-        {
-
-        }
+        return this.mean;
     }
 
     public double stddev()
     {
-
+        return this.stddev;
     }
 
     public double confidenceLo()
     {
-
+        return this.confidenceLo;
     }
 
     public double confidenceHi()
     {
-
+        return this.confidenceHi;
     }
 
     public static void main(String... args)
