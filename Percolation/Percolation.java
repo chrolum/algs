@@ -4,13 +4,17 @@ import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.StdStats;
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
+/**
+ * Note: avoid the backwash
+ */
+
 public class Percolation
 {
+    public int n;//gird size
     private WeightedQuickUnionUF uf;
-    private int count = 0;
+    private int count = 0;//open size numbers
     private boolean[][] isOpen;//zero is blocked, one is open site
-    private int n;
-    private int top;
+    private int top;//virtual top node index
     private int bottom;
 
     public Percolation(int n)
@@ -22,19 +26,20 @@ public class Percolation
         this.top = n*n;
         this.bottom = n*n+1;
 
-        for (int i = 0; i < n; i++)
+        for (int i = 1; i <= n; i++)
         {
-            uf.union(realPostion(0, i), top);//union the first row and the top virtual node(index is n*n)
-            uf.union(realPostion(n-1, i), bottom);//union the last row and the bottom virtual node
+            uf.union(realPostion(1, i), top);//union the first row and the top virtual node(index is n*n)
+            uf.union(realPostion(n, i), bottom);//union the last row and the bottom virtual node
         }
 
         for (int i = 0; i < n; i++)
             for (int j = 0; j < n; j++)
-                isOpen[i][j] = true;
+                isOpen[i][j] = false;
 
+//        StartSimulatie();//make the system be in percolate site
     }
 
-    public void open(int row, int col)//
+    public void open(int row, int col)
     {
         valided(row, col);
         if (!isOpen(row, col))
@@ -42,20 +47,19 @@ public class Percolation
             isOpen[row-1][col-1] = true;
 
             //if the site open in top or bottom row, connected to the virtual node
-            if (row == 1) {uf.union(realPostion(row, col), top);}
-            if (row == n) {uf.union(realPostion(row, col), bottom);}
+//            if (row == 1) {uf.union(realPostion(row, col), top);}
+//            if (row == n) {uf.union(realPostion(row, col), bottom);}
 
-            //check left, right, up, and down;Note the invalid postion
-            boolean newSite = false;
-            if (row != n && isOpen(row, col)) {uf.union(realPostion(row, col), realPostion(row+1, col));}//down
-            if (row != 1 && isOpen(row, col)) {uf.union(realPostion(row, col), realPostion(row-1, col));}//up
-            if (col != n && isOpen(row, col)) {uf.union(realPostion(row, col), realPostion(row, col+1));}//right
-            if (row != 1 && isOpen(row, col)) {uf.union(realPostion(row, col), realPostion(row, col-1));}//down
+            //check left, right, up, and down;Note the invalid postion and the adj postion whether open
+            if (row != n && isOpen(row+1, col)) {uf.union(realPostion(row, col), realPostion(row+1, col));}//down
+            if (row != 1 && isOpen(row-1, col)) {uf.union(realPostion(row, col), realPostion(row-1, col));}//up
+            if (col != n && isOpen(row, col+1)) {uf.union(realPostion(row, col), realPostion(row, col+1));}//right
+            if (col != 1 && isOpen(row, col-1)) {uf.union(realPostion(row, col), realPostion(row, col-1));}//down
 
             //count the opensite
 //            if (newSite) {count++;}
 
-            count++;
+            this.count++;
         }
     }
 
@@ -64,7 +68,6 @@ public class Percolation
         valided(row, col);
         return isOpen[row-1][col-1];
     }
-
 
     public boolean isFull(int row, int col)
     {
@@ -90,20 +93,31 @@ public class Percolation
 
     private void valided(int row, int col)
     {
-        if (col < 1 || col > n || row < 1 || col > n)
+        if (col < 1 || col > n || row < 1 || row > n)
         {
-            throw new IllegalArgumentException("col or row is invalid");
+            throw new IllegalArgumentException("col or row is invalid" + "col:" + col + "row:" + row);
         }
     }
 
-    public void StartSimulatie()
-    {
-        while(!this.percolates())
-        {
-            int index = StdRandom.uniform(1, n*n);//
-            int row = index / n;
-            int col = index % n + 1;
-            open(row, col);
-        }
-    }
+
+//    private void StartSimulatie()
+//    {
+//        int[] randomIndex = new int[n*n];//create an shuffle index to randomly open the blocked site
+//        for (int i = 0; i < n*n; i++)
+//        {
+//            randomIndex[i] = i;
+//        }
+//        StdRandom.shuffle(randomIndex);
+//        int i = 0;
+//        int index;
+//        while(!this.percolates())//start simulation until the system is percolation
+//        {
+//            index = randomIndex[i];
+//            int row = (index / n) + 1;
+//            int col = ((index % n) + 1);
+////            System.out.println("index:" + index + " " + "col:" + col + " " + "row:" + row);
+//            open(row, col);
+//            i++;
+//        }
+//    }
 }
