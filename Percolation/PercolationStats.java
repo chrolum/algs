@@ -1,6 +1,8 @@
 package Percolation;
 
 import edu.princeton.cs.algs4.StdIn;
+import edu.princeton.cs.algs4.StdRandom;
+import edu.princeton.cs.algs4.StdStats;
 
 /**
  * @author crkylin
@@ -16,31 +18,23 @@ public class PercolationStats
     public PercolationStats(int n, int trials)
     {
 
-        int[] testData = new int[trials];//record the trials data
+        double[] testData = new double[trials];//record the trials data
         for (int i = 0; i < trials; i++)//do trials time simulation
         {
             Percolation perc = new Percolation(n);
-            testData[i] = perc.getCount();
+            StartSimulatie(perc);
+            testData[i] = perc.numberOfOpenSites() / (double)(n*n);
         }
 
         //init stats infomation
         //mean
-        double total = 0.0;
-        for (int i = 0; i < trials; i++)
-        {
-            total += testData[i];
-        }
-        this.mean = total / trials;
+        this.mean = StdStats.mean(testData);
         //stddev
-        total = 0.0;
-        for (int i = 0; i < trials; i++)
-        {
-            total += Math.pow((testData[i] - mean), 2);
-        }
-        this.stddev = total / (trials - 1);
+        this.stddev = StdStats.stddev(testData);
         //confLo
         this.confidenceLo = this.mean - 1.96 * Math.sqrt(this.stddev) / Math.sqrt(trials);
         //confHi
+        this.confidenceHi = this.mean + 1.96 * Math.sqrt(this.stddev) / Math.sqrt(trials);
 
     }
 
@@ -64,12 +58,35 @@ public class PercolationStats
         return this.confidenceHi;
     }
 
-    public static void main(String... args)
+    //start single simulation
+    private void StartSimulatie(Percolation perc)
+    {
+        int n = perc.n;
+        int[] randomIndex = new int[n*n];//create an shuffle index to randomly open the blocked site
+        for (int i = 0; i < n*n; i++)
+        {
+            randomIndex[i] = i;
+        }
+        StdRandom.shuffle(randomIndex);
+        int i = 0;
+        int index;
+        while(!perc.percolates())//start simulation until the system is percolation
+        {
+            index = randomIndex[i];
+            int row = (index / n) + 1;
+            int col = ((index % n) + 1);
+//            System.out.println("index:" + index + " " + "col:" + col + " " + "row:" + row);
+            perc.open(row, col);
+            i++;
+        }
+    }
+    public static void main(String[] args)
     {
         int n = StdIn.readInt();
         int T = StdIn.readInt();
         PercolationStats percStats = new PercolationStats(n, T);
-        System.out.println("mean" + "=" + percStats.mean);
-        System.out.println("stddev" + "=" + percStats.stddev);
+        System.out.println("mean                    = " + percStats.mean());
+        System.out.println("stddev                  = " + percStats.stddev());
+        System.out.println("95% confidence interval = " + "[" + percStats.confidenceLo() + ", " + percStats.confidenceHi() + "]");
     }
 }
