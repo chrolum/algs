@@ -56,9 +56,9 @@ public class Percolation
             if (col != n && isOpen(row, col+1)) {uf.union(realPostion(row, col), realPostion(row, col+1));}//right
             if (col != 1 && isOpen(row, col-1)) {uf.union(realPostion(row, col), realPostion(row, col-1));}//down
 
-            //count the opensite
-//            if (newSite) {count++;}
+            //avoid the backwash
 
+            //
             this.count++;
         }
     }
@@ -98,7 +98,6 @@ public class Percolation
             throw new IllegalArgumentException("col or row is invalid" + "col:" + col + "row:" + row);
         }
     }
-
 
 //    private void StartSimulatie()
 //    {
