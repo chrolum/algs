@@ -169,13 +169,13 @@ public class Deque<Item> implements Iterable<Item> {
         deque.addLast(6);
         for(Integer i : deque)
         {
-            System.out.println(i);//print 3 2 1 3 2 1
+            System.out.println(i);//print 1 2 3 4 5 6
         }
 
-        System.out.println("remove element:" + deque.removeFirst());//return 3
+        System.out.println("remove element:" + deque.removeFirst());//return 1
         System.out.println("remove element:" + deque.removeFirst());//return 2
-        System.out.println("remove element:" + deque.removeLast());//return 1
-        System.out.println("remove element:" + deque.removeLast());//return 2
+        System.out.println("remove element:" + deque.removeLast());//return 6
+        System.out.println("remove element:" + deque.removeLast());//return 5
 
         System.out.println("current deque size is " + deque.size());//print 2
 
@@ -196,11 +196,29 @@ public class Deque<Item> implements Iterable<Item> {
         {
             System.out.println(i);//print 2 1 3
         }
-        //case 3: invalid operation remove a empty deque
-        Deque<Integer> d3 = new Deque<>();
-        System.out.println(d3.isEmpty());//true
-        d3.removeLast();//throw a exception
-        //case 4 : invalided input
-        d3.addFirst(null);
+        //case 3: normal test
+        Deque<Integer> d4 = new Deque<>();
+        for (int i = 0; i < 50; i++)
+        {
+            d4.addFirst(i);
+            d4.addLast(i);
+        }
+
+        while(!d4.isEmpty())
+        {
+            d4.removeLast();
+        }
+        System.out.println("d4's size is" + d4.size());
+        //case 4: invalid operation remove a empty deque
+        try
+        {
+            Deque<Integer> d3 = new Deque<>();
+            System.out.println(d3.isEmpty());//true
+            d3.removeLast();//throw a exception
+        }
+        catch (Exception e)
+        {
+            throw e;
+        }
     }
 }
