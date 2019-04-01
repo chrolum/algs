@@ -33,6 +33,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     }
     public void enqueue(Item item)           // add the item
     {
+        if (item == null) throw new IllegalArgumentException();
         if (items.length == N) resize(2 * items.length);
         items[N++] = item;
     }
@@ -99,8 +100,29 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         }
     }
 
-    public static void main(String[] args)   // unit testing (optional)
+    public static void main(String[] args)  // unit testing (optional)
     {
+        RandomizedQueue<Integer> rq = new RandomizedQueue<>();
+
+        try
+        {
+            rq.dequeue();
+        }
+        catch (Exception e)
+        {
+            throw e;
+        }
+
+        for (int i = 0; i < 100; i++)//resize
+        {
+            rq.enqueue(i);
+        }
+
+        for (int i = 0; i < 90; i++)//resize
+        {
+            rq.dequeue();
+        }
+
 
     }
 }
