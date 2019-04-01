@@ -20,7 +20,8 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     public RandomizedQueue()                 // construct an empty randomized queue
     {
-        items = (Item[]) (new Object[10]);//
+        items = (Item[]) (new Object[10]);
+        this.N = 0;
 
     }
     public boolean isEmpty()                 // is the randomized queue empty?
@@ -40,12 +41,14 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     public Item dequeue()                    // remove and return a random item
     {
         if (isEmpty()) throw new NoSuchElementException();
-        if (N == items.length / 4) resize(items.length / 2);
 
-        int i = StdRandom.uniform(N);
+        int i = StdRandom.uniform(0,N);
+
         Item item = items[i];
-        items[i] = items[N--];//randomly choose a element and use queue end element refill it
+        items[i] = items[--N];//randomly choose a element and use queue end element refill it
         items[N] = null;//recycle the memory
+
+        if (N == items.length / 4) resize(items.length / 2);
         return item;
     }
     public Item sample()                     // return a random item (but do not remove it)
@@ -66,7 +69,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
         public RandomizedQueueIterator()
         {
-            randomItems = Arrays.copyOf(items, items.length);
+            randomItems = Arrays.copyOf(items, N);//can not use items.lenght! items has null element
             StdRandom.shuffle(randomItems);
         }
 
@@ -96,23 +99,15 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         for (int i = 0; i < this.N; i++)
         {
             copy[i] = this.items[i];
-            this.items = copy;
         }
+        this.items = copy;
     }
 
     public static void main(String[] args)  // unit testing (optional)
     {
         RandomizedQueue<Integer> rq = new RandomizedQueue<>();
 
-        try
-        {
-            rq.dequeue();
-        }
-        catch (Exception e)
-        {
-            throw e;
-        }
-
+        //case 1: en and dequeue test
         for (int i = 0; i < 100; i++)//resize
         {
             rq.enqueue(i);
@@ -123,6 +118,25 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
             rq.dequeue();
         }
 
+        System.out.println("current queue size is" + rq.size());
 
+        //case2: sample() test
+        System.out.println("sample is " + rq.sample());
+
+        //case 3: iterable interface test
+        for (Integer n : rq)
+        {
+            System.out.println(n);
+        }
+
+
+        try
+        {
+            rq.dequeue();
+        }
+        catch (Exception e)
+        {
+            throw e;
+        }
     }
 }
