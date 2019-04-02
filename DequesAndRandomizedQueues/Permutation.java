@@ -1,5 +1,6 @@
 package DequesAndRandomizedQueues;
 
+import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdIn;
 
 /**
@@ -11,7 +12,6 @@ public class Permutation {
     {
         int k = Integer.parseInt(args[0]);
         RandomizedQueue<String> rq = new RandomizedQueue<>();
-        String str = StdIn.readString();
         while (!StdIn.isEmpty())
         {
             rq.enqueue(StdIn.readString());

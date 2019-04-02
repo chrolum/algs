@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
+ * Note: submit the file after removing the package statement
  * a randomizedqueue must use the array structure to implement
  * @author crkylin
  * Email:crkylin@gmail.com
@@ -127,16 +128,6 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         for (Integer n : rq)
         {
             System.out.println(n);
-        }
-
-
-        try
-        {
-            rq.dequeue();
-        }
-        catch (Exception e)
-        {
-            throw e;
         }
     }
 }

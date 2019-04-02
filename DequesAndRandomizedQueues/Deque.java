@@ -107,7 +107,7 @@ public class Deque<Item> implements Iterable<Item> {
         return removeNode.item;
     }
 
-    public Item removeLast() throws UnsupportedOperationException             // remove and return the item from the end
+    public Item removeLast()            // remove and return the item from the end
     {
         if (isEmpty()) throw new NoSuchElementException();
 
@@ -209,16 +209,5 @@ public class Deque<Item> implements Iterable<Item> {
             d4.removeLast();
         }
         System.out.println("d4's size is" + d4.size());
-        //case 4: invalid operation remove a empty deque
-        try
-        {
-            Deque<Integer> d3 = new Deque<>();
-            System.out.println(d3.isEmpty());//true
-            d3.removeLast();//throw a exception
-        }
-        catch (Exception e)
-        {
-            throw e;
-        }
     }
 }
