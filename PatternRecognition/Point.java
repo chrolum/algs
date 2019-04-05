@@ -26,8 +26,7 @@ public class Point implements Comparable<Point> {
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "(" + x + ", " + y + ")";
     }
 

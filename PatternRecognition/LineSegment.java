@@ -6,6 +6,9 @@ package PatternRecognition;
  **/
 
 public class LineSegment {
+    private Point p;
+    private Point q;
+
     public LineSegment(Point p, Point q) {
 
     }
