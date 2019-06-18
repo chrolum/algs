@@ -70,7 +70,6 @@ public class Point implements Comparable<Point> {
     }
 
     public Comparator<Point> slopeOrder() {         // compare two points by slopes they make with this point
-
     }
 
     /**
