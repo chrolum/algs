@@ -1,5 +1,6 @@
 package PatternRecognition;
 
+import edu.princeton.cs.algs4.MergeBU;
 import edu.princeton.cs.algs4.StdDraw;
 
 import java.util.Comparator;
@@ -43,13 +44,13 @@ public class Point implements Comparable<Point> {
      *         argument point
      */
     public int compareTo(Point that) {              // compare two points by y-coordinates, breaking ties by x-coordinates
-            if (this.y <= that.y && this.x < that.y) { //y0 <= y1 and x0 < x1
-                return 1;
+            if (this.y < that.y || this.y == that.y && this.x < that.x) { //y0 <= y1 and x0 < x1
+                return -1;
             }
-            else if (this.y == that.y && this.x == that.x) {
+            if (this.y == that.y && this.x == that.x) {
                 return 0;
             }
-            else return -1;
+            return 1;
     }
 
     /**
@@ -70,6 +71,12 @@ public class Point implements Comparable<Point> {
     }
 
     public Comparator<Point> slopeOrder() {         // compare two points by slopes they make with this point
+        return new Comparator<Point>() {
+            @Override
+            public int compare(Point o1, Point o2) {
+                return (int) o1.slopeTo(o2);
+            }
+        }
     }
 
     /**
