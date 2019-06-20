@@ -1,6 +1,5 @@
 package PatternRecognition;
 
-import edu.princeton.cs.algs4.MergeBU;
 import edu.princeton.cs.algs4.StdDraw;
 
 import java.util.Comparator;
@@ -10,10 +9,10 @@ import java.util.Comparator;
  * Email:crkylin@gmail.com
  **/
 public class Point implements Comparable<Point> {
-    private double x;
-    private double y;
+    private final int x;
+    private final int y;
 
-    public Point(double x, double y) {                     // constructs the point (x, y)
+    public Point(int x, int y) {                     // constructs the point (x, y)
         this.x = x;
         this.y = y;
     }
@@ -44,7 +43,7 @@ public class Point implements Comparable<Point> {
      *         argument point
      */
     public int compareTo(Point that) {              // compare two points by y-coordinates, breaking ties by x-coordinates
-            if (this.y < that.y || this.y == that.y && this.x < that.x) { //y0 <= y1 and x0 < x1
+            if (this.y < that.y || (this.y == that.y && this.x < that.x)) { //y0 <= y1 and x0 < x1
                 return -1;
             }
             if (this.y == that.y && this.x == that.x) {
@@ -67,16 +66,17 @@ public class Point implements Comparable<Point> {
     public double slopeTo(Point that) {             // the slope between this point and that point
         if (that.x == this.x && that.y == this.y) return Double.NEGATIVE_INFINITY;// the same points
         if (that.y != this.y && that.x == this.x) return Double.POSITIVE_INFINITY;// two points is vertical
-        return (that.y - this.y) / (that.x - this.x);
+        return (double)(that.y - this.y) / (that.x - this.x);
     }
 
     public Comparator<Point> slopeOrder() {         // compare two points by slopes they make with this point
-        return new Comparator<Point>() {
+        return new Comparator<Point>() { // inner anoy class
             @Override
-            public int compare(Point o1, Point o2) {
-                return (int) o1.slopeTo(o2);
+            public int compare(Point o1, Point o2)
+            {
+                return Double.compare(Point.this.slopeTo(o1), Point.this.slopeTo(o2));
             }
-        }
+        };
     }
 
     /**
@@ -90,8 +90,8 @@ public class Point implements Comparable<Point> {
         Point p3 = new Point(1,1);
         Point p4 = new Point(1,2);
 
-        System.out.println(p1.compareTo(p2));//return 1
-        System.out.println(p1.compareTo(p4));//return 1
+        System.out.println(p2.compareTo(p1));//return 1
+        System.out.println(p4.compareTo(p1));//return 1
         System.out.println(p2.compareTo(p3));//return 0
         System.out.println(p3.compareTo(p4));//return -1
 
@@ -99,16 +99,19 @@ public class Point implements Comparable<Point> {
         Point p5 = new Point(0, 1);
         System.out.println("(0, 1) and (0, 0)'s sloper is " + p5.slopeTo(p1));//vertical return POSITIVE_INFINITY
         System.out.println("two the same points's sloper is " + p2.slopeTo(p3));//return NEGATIVE_INFINITY
-        Point p6 = new Point(3.14, 2.32);
-        Point p7 = new Point(31.14, 23.32);
+        Point p6 = new Point(3, 2);
+        Point p7 = new Point(5, 23);
         System.out.println("p6 and p7's sloper is " + p6.slopeTo(p7));//normal case
-        Point p8 = new Point(12, 7.01);
-        Point p9 = new Point(13, 7.01);
+        Point p8 = new Point(12, 7);
+        Point p9 = new Point(13, 7);
         System.out.println("the two horizontal points' sloper is " + p8.slopeTo(p9));//horizontal case
         System.out.println("equality test: " + p9.equals(p8));
 
-
-
+        //case3：slopeOrder() test
+        Point p10 = new Point(1,1);
+        Point p11 = new Point(3,4);
+        Comparator<Point> c10 = p10.slopeOrder();
+        Comparator<Point> c11 = p11.slopeOrder();
     }
 }
 
