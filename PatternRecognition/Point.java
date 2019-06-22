@@ -2,6 +2,7 @@ package PatternRecognition;
 
 import edu.princeton.cs.algs4.StdDraw;
 
+import java.util.Arrays;
 import java.util.Comparator;
 
 /**
@@ -70,11 +71,17 @@ public class Point implements Comparable<Point> {
     }
 
     public Comparator<Point> slopeOrder() {         // compare two points by slopes they make with this point
-        return new Comparator<Point>() { // inner anoy class
+        return new Comparator<Point>() {
             @Override
             public int compare(Point o1, Point o2)
             {
-                return Double.compare(Point.this.slopeTo(o1), Point.this.slopeTo(o2));
+                if (Double.compare(Point.this.slopeTo(o1), Point.this.slopeTo(o2)) == 0) { //the same slope point should be compate with point
+                    return o1.compareTo(o2);
+                }
+                else {
+                    return Double.compare(Point.this.slopeTo(o1), Point.this.slopeTo(o2)) ;
+                }
+
             }
         };
     }
@@ -108,10 +115,27 @@ public class Point implements Comparable<Point> {
         System.out.println("equality test: " + p9.equals(p8));
 
         //case3：slopeOrder() test
+        Point o1 = new Point(0,0);
+        Point o2 = new Point(0,10);
+
         Point p10 = new Point(1,1);
-        Point p11 = new Point(3,4);
-        Comparator<Point> c10 = p10.slopeOrder();
-        Comparator<Point> c11 = p11.slopeOrder();
+        Point p11 = new Point(2,3);
+        Point p12 = new Point(4,10);
+        Point p13 = new Point(0,1);
+        Point p14 = new Point(7,0);
+        Point p15 = new Point(9,4);
+        Point[] test = new Point[]{p10, p11, p12, p13, p14, p15};
+        System.out.print("curr array is ");
+        for (Point p : test) {
+            System.out.print(p + " ");
+        }
+        Arrays.sort(test, o1.slopeOrder());
+        System.out.println();
+        System.out.print("Sorted array is ");
+        for (Point p :test) {
+            System.out.print(p + " ");
+        }
+
     }
 }
 
