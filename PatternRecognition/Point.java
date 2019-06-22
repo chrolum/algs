@@ -65,6 +65,7 @@ public class Point implements Comparable<Point> {
      * @return the slope between this point and the specified point
      */
     public double slopeTo(Point that) {             // the slope between this point and that point
+        if (that == null) throw new IllegalArgumentException();
         if (that.x == this.x && that.y == this.y) return Double.NEGATIVE_INFINITY;// the same points
         if (that.y != this.y && that.x == this.x) return Double.POSITIVE_INFINITY;// two points is vertical
         return (double)(that.y - this.y) / (that.x - this.x);
@@ -73,8 +74,8 @@ public class Point implements Comparable<Point> {
     public Comparator<Point> slopeOrder() {         // compare two points by slopes they make with this point
         return new Comparator<Point>() {
             @Override
-            public int compare(Point o1, Point o2)
-            {
+            public int compare(Point o1, Point o2) {
+                if (o1 == null || o2 == null) throw new IllegalArgumentException();
                 if (Double.compare(Point.this.slopeTo(o1), Point.this.slopeTo(o2)) == 0) { //the same slope point should be compate with point
                     return o1.compareTo(o2);
                 }

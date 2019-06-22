@@ -1,12 +1,9 @@
 package PatternRecognition;
 
 import edu.princeton.cs.algs4.In;
-import edu.princeton.cs.algs4.StdDraw;
 import edu.princeton.cs.algs4.StdOut;
-
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 
 /**
  * @author crkylin
@@ -22,24 +19,25 @@ public class FastCollinearPoints {
         for (int i = 0; i < points.length; i++) {
             Arrays.sort(points, origin[i].slopeOrder());
 
-            for (Point p : points) {
-                System.out.print(p + " ");
-            }
+//            for (Point p : points) {
+//                System.out.print(p + " ");
+//            }
 
             //Check if any 3 (or more) adjacent points in the sorted order have equal slopes with respect to
             int start = 0;
             for (int j = 0; j < points.length; j++) {
-                System.out.print(origin[i].slopeTo(points[j]) + " ");
+//                System.out.print(origin[i].slopeTo(points[j]) + " ");
                 if (Double.compare(origin[i].slopeTo(points[start]), origin[i].slopeTo(points[j])) == 0) continue;
                 else {
-                    if (j - start >= 3) {
+                    if (j - start >= 3 && origin[i].compareTo(points[start]) < 0) {
                         segments.add(new LineSegment(origin[i], points[j-1]));
                     }
                     start = j;
                 }
             }
-            System.out.println();
-            if (points.length - start >= 3) segments.add(new LineSegment(points[i], points[points.length-1]));
+//            System.out.println();
+            //the last segment if it exist
+            if (points.length - start >= 3 && origin[i].compareTo(points[start]) < 0) segments.add(new LineSegment(origin[i], points[points.length-1]));
         }
     }
 

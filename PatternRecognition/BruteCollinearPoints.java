@@ -39,6 +39,7 @@ public class BruteCollinearPoints {
 
         return this.segments.toArray(new LineSegment[0]);
     }
+    //if points is null or contains duplicated entry, throw the IllegalArgumentException()
 
     public static void main(String[] args) {
         In in = new In(args[0]);
