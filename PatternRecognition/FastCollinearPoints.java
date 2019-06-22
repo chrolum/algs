@@ -14,24 +14,35 @@ import java.util.Comparator;
  **/
 public class FastCollinearPoints {
     private ArrayList<LineSegment> segments;
+
     public FastCollinearPoints(Point[] points) {
         if (points == null) throw new IllegalArgumentException();
         this.segments = new ArrayList<>();
+        Point[] origin = Arrays.copyOf(points, points.length);
         for (int i = 0; i < points.length; i++) {
-            Comparator<Point> comp = points[i].slopeOrder();
-            Arrays.sort(points, comp);
-            //Check if any 3 (or more) adjacent points in the sorted order have equal slopes with respect to
-            int j = 1;
-            while (j < points.length) {// the first point is the original point
-                double currSloper = points[i].slopeTo(points[j-1]);
-                int cnt = 0;
-                while (j < points.length && points[i].slopeTo(points[j]) == currSloper) {
-                    j++; cnt++;
-                }
-                j++;
+            Arrays.sort(points, origin[i].slopeOrder());
+
+            for (Point p : points) {
+                System.out.print(p + " ");
             }
+
+            //Check if any 3 (or more) adjacent points in the sorted order have equal slopes with respect to
+            int start = 0;
+            for (int j = 0; j < points.length; j++) {
+                System.out.print(origin[i].slopeTo(points[j]) + " ");
+                if (Double.compare(origin[i].slopeTo(points[start]), origin[i].slopeTo(points[j])) == 0) continue;
+                else {
+                    if (j - start >= 3) {
+                        segments.add(new LineSegment(origin[i], points[j-1]));
+                    }
+                    start = j;
+                }
+            }
+            System.out.println();
+            if (points.length - start >= 3) segments.add(new LineSegment(points[i], points[points.length-1]));
         }
     }
+
     public int numberOfSegments() {
         return this.segments.size();
     }
