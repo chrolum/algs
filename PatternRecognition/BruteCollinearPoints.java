@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class BruteCollinearPoints {
     private ArrayList<LineSegment> segments;
     public BruteCollinearPoints(Point[] points) {
-        if (points == null) throw new IllegalArgumentException();
+        argsTest(points);
         this.segments = new ArrayList<>();
         for (int p = 0; p < points.length; p++) {
             for (int s = 0; s < points.length; s++) {
@@ -39,7 +39,13 @@ public class BruteCollinearPoints {
 
         return this.segments.toArray(new LineSegment[0]);
     }
-    //if points is null or contains duplicated entry, throw the IllegalArgumentException()
+    //null and duplicated entry check
+    private void argsTest(Point[] points) {
+        if (points == null) throw new IllegalArgumentException();
+        for (int i = 0; i < points.length; i++) {
+            if (points[i] == null || ) throw new IllegalArgumentException();
+        }
+    }
 
     public static void main(String[] args) {
         In in = new In(args[0]);
