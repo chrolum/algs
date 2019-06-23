@@ -68,6 +68,7 @@ public class Point implements Comparable<Point> {
         if (that == null) throw new IllegalArgumentException();
         if (that.x == this.x && that.y == this.y) return Double.NEGATIVE_INFINITY;// the same points
         if (that.y != this.y && that.x == this.x) return Double.POSITIVE_INFINITY;// two points is vertical
+        if (that.y == this.y) return 0.0;//horizontal return positive zero
         return (double)(that.y - this.y) / (that.x - this.x);
     }
 
@@ -92,51 +93,10 @@ public class Point implements Comparable<Point> {
      * @param args
      */
     public static void main(String[] args) {
-        //case 1: compareTo() test
-        Point p1 = new Point(0, 0);
-        Point p2 = new Point(1, 1);
-        Point p3 = new Point(1,1);
-        Point p4 = new Point(1,2);
-
-        System.out.println(p2.compareTo(p1));//return 1
-        System.out.println(p4.compareTo(p1));//return 1
-        System.out.println(p2.compareTo(p3));//return 0
-        System.out.println(p3.compareTo(p4));//return -1
-
-        //case2: sloperTo() test
-        Point p5 = new Point(0, 1);
-        System.out.println("(0, 1) and (0, 0)'s sloper is " + p5.slopeTo(p1));//vertical return POSITIVE_INFINITY
-        System.out.println("two the same points's sloper is " + p2.slopeTo(p3));//return NEGATIVE_INFINITY
-        Point p6 = new Point(3, 2);
-        Point p7 = new Point(5, 23);
-        System.out.println("p6 and p7's sloper is " + p6.slopeTo(p7));//normal case
-        Point p8 = new Point(12, 7);
-        Point p9 = new Point(13, 7);
-        System.out.println("the two horizontal points' sloper is " + p8.slopeTo(p9));//horizontal case
-        System.out.println("equality test: " + p9.equals(p8));
-
-        //case3：slopeOrder() test
-        Point o1 = new Point(0,0);
-        Point o2 = new Point(0,10);
-
-        Point p10 = new Point(1,1);
-        Point p11 = new Point(2,3);
-        Point p12 = new Point(4,10);
-        Point p13 = new Point(0,1);
-        Point p14 = new Point(7,0);
-        Point p15 = new Point(9,4);
-        Point[] test = new Point[]{p10, p11, p12, p13, p14, p15};
-        System.out.print("curr array is ");
-        for (Point p : test) {
-            System.out.print(p + " ");
-        }
-        Arrays.sort(test, o1.slopeOrder());
-        System.out.println();
-        System.out.print("Sorted array is ");
-        for (Point p :test) {
-            System.out.print(p + " ");
-        }
-
+        // positive zero slope
+        Point p0 = new Point(149, 22);
+        Point p1 = new Point(30, 22);
+        System.out.print(p0.slopeTo(p1));
     }
 }
 
