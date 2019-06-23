@@ -10,24 +10,23 @@ import java.util.Arrays;
  * Email:crkylin@gmail.com
  **/
 public class FastCollinearPoints {
-    private ArrayList<LineSegment> segments;
+    private final ArrayList<LineSegment> segments;
 
     public FastCollinearPoints(Point[] points) {
-        if (points == null) throw new IllegalArgumentException();
+        argsTest(points);
+
         this.segments = new ArrayList<>();
         Point[] origin = Arrays.copyOf(points, points.length);
+
         for (int i = 0; i < points.length; i++) {
+            Arrays.sort(points);//sort the point by x,y-coondinated
             Arrays.sort(points, origin[i].slopeOrder());
 
-//            for (Point p : points) {
-//                System.out.print(p + " ");
-//            }
-
-            //Check if any 3 (or more) adjacent points in the sorted order have equal slopes with respect to
             int start = 0;
             for (int j = 0; j < points.length; j++) {
-//                System.out.print(origin[i].slopeTo(points[j]) + " ");
-                if (Double.compare(origin[i].slopeTo(points[start]), origin[i].slopeTo(points[j])) == 0) continue;
+                if (Double.compare(origin[i].slopeTo(points[start]), origin[i].slopeTo(points[j])) == 0){
+                    continue;
+                }
                 else {
                     if (j - start >= 3 && origin[i].compareTo(points[start]) < 0) {
                         segments.add(new LineSegment(origin[i], points[j-1]));
@@ -35,8 +34,6 @@ public class FastCollinearPoints {
                     start = j;
                 }
             }
-//            System.out.println();
-            //the last segment if it exist
             if (points.length - start >= 3 && origin[i].compareTo(points[start]) < 0) segments.add(new LineSegment(origin[i], points[points.length-1]));
         }
     }
@@ -45,10 +42,19 @@ public class FastCollinearPoints {
         return this.segments.size();
     }
 
-    public LineSegment[] segments()
-    {
+    public LineSegment[] segments() {
         return this.segments.toArray(new LineSegment[0]);
     }
+
+    // args test
+    private void argsTest(Point[] points) {
+        if (points == null || points[0] == null) throw new IllegalArgumentException();
+        Arrays.sort(points);
+        for (int i = 1; i < points.length; i++) {
+            if (points[i] == null || points[i].compareTo(points[i-1]) == 0) throw new IllegalArgumentException();
+        }
+    }
+
     //unit test
     public static void main(String[] args) {
         In in = new In(args[0]);

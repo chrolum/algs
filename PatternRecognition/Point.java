@@ -78,13 +78,7 @@ public class Point implements Comparable<Point> {
             @Override
             public int compare(Point o1, Point o2) {
                 if (o1 == null || o2 == null) throw new NullPointerException();
-                if (Double.compare(Point.this.slopeTo(o1), Point.this.slopeTo(o2)) == 0) { //the same slope point should be compate with point
-                    return o1.compareTo(o2);
-                }
-                else {
-                    return Double.compare(Point.this.slopeTo(o1), Point.this.slopeTo(o2)) ;
-                }
-
+                return Double.compare(Point.this.slopeTo(o1), Point.this.slopeTo(o2));
             }
         };
     }
