@@ -1,4 +1,4 @@
-package Puzzle;
+package ProgrammingAssign.Puzzle;
 
 /**
  * @author crkylin

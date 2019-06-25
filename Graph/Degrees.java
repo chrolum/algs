@@ -68,6 +68,9 @@ public class Degrees {
     }
 
     public boolean isMap() {
-        
+        for (int degree : indegrees) {
+            if (degree == 0) return true;
+        }
+        return false;
     }
 }

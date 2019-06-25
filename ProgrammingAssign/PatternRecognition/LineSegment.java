@@ -1,4 +1,4 @@
-package PatternRecognition;
+package ProgrammingAssign.PatternRecognition;
 
 /*************************************************************************
  *  Compilation:  javac LineSegment.java

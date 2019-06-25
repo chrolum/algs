@@ -1,4 +1,4 @@
-package Puzzle;
+package ProgrammingAssign.Puzzle;
 
 /******************************************************************************
  *  Compilation:  javac-algs4 PuzzleChecker.java

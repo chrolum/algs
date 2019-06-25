@@ -1,8 +1,7 @@
-package PatternRecognition;
+package ProgrammingAssign.PatternRecognition;
 
 import edu.princeton.cs.algs4.StdDraw;
 
-import java.util.Arrays;
 import java.util.Comparator;
 
 /**
