@@ -1,13 +1,17 @@
 package ProgrammingAssign.Puzzle;
 
+import edu.princeton.cs.algs4.MinPQ;
+
 /**
  * @author crkylin
  * Email:crkylin@gmail.com
  **/
 public class Solver {
+    private MinPQ<Board> pq;
+
     // construct a board from an n-by-n array of blocks
     public Solver(Board initial) {
-
+        
     }
     // is the initial board solvable?
     public boolean isSolvable() {
