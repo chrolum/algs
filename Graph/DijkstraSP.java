@@ -4,6 +4,8 @@ import edu.princeton.cs.algs4.DirectedEdge;
 import edu.princeton.cs.algs4.EdgeWeightedDigraph;
 import edu.princeton.cs.algs4.IndexMinPQ;
 
+import java.util.Stack;
+
 /**
  * @author crkylin
  * Email:crkylin@gmail.com
@@ -39,9 +41,15 @@ public class DijkstraSP {
     }
 
     public Iterable<DirectedEdge> pathTo(int v) {
-
+        if (!hasPathTo(v)) return null;
+        Stack<DirectedEdge> path = new Stack<>();
+        for (DirectedEdge e = edgeTo[v]; e != null; e = edgeTo[e.from()]) {
+            path.push(e);
+        }
+        return path;
     }
 
+    //relax and insert the edge into minPQ
     private void relax(EdgeWeightedDigraph G, int v) {
         for (DirectedEdge e : G.adj(v)) {
             int w = e.to();
