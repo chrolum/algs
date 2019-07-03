@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * use a array with 9 length to store the baord status
  */
-public class Board {
+public class Board implements Comparable<Board> {
     // construct a board from an n-by-n array of blocks
     // (where blocks[i][j] = block in row i, column j)
     protected final int[][] board;
@@ -118,6 +118,10 @@ public class Board {
             str.append('\n');
         }
         return str.toString();
+    }
+
+    public int compareTo(Board that) {
+        return Integer.compare(this.hamming(), that.hamming());
     }
 
     private int[][] exch(int[][] a, int this_x, int this_y, int that_x, int that_y) {
