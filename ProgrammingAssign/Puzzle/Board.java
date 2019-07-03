@@ -50,15 +50,16 @@ public class Board {
 
     // sum of Manhattan distances between blocks and goal
     public int manhattan() {
-        int horizonal = 0, vertical = 0;
+        int horizontal = 0, vertical = 0, dist = 0;
         for (int i = 0; i < this.dimension(); i++) {
             for (int j = 0; j < this.dimension(); j++) {
                 if (board[i][j] == 0) continue;
-                horizonal = Math.abs((board[i][j] / this.dimension()) - i);
-                vertical = Math.abs((board[i][j] % this.dimension()) - j);
+                horizontal = Math.abs((board[i][j] - 1) % this.dimension() - j);
+                vertical = Math.abs((board[i][j] - 1) / this.dimension() - i);
+                dist += horizontal + vertical;
             }
         }
-        return horizonal + vertical;
+        return dist;
     }
 
     // is this board the goal board?
@@ -68,10 +69,12 @@ public class Board {
 
     // a board that is obtained by exchanging any pair of blocks
     public Board twin() {
-        int[][] twinBlocks = new int[board.length][board[0].length];
+        int[][] twinBlocks = makeBoardCopy();
         for (int i = 0; i < board.length; i++) {
             twinBlocks[i] = board[i].clone();
         }
+        int p1_r = blankRow == 0 ? 1 : 0, p1_c = 0, p2_r = blankRow == 0 ? 1 : 0, p2_c = 1;//tick of the blank block
+        exch(twinBlocks, p1_r, p1_c, p2_r, p2_c);
         return new Board(twinBlocks);
     }
 
@@ -94,10 +97,10 @@ public class Board {
     public Iterable<Board> neighbors() {
         List<Board> neighbors = new LinkedList<>();
 
-        if (blankRow > 0) neighbors.add(new Board(exch(board, blankRow, blankCol, blankRow - 1, blankCol)));
-        if (blankCol > 0) neighbors.add(new Board(exch(board, blankRow, blankCol, blankRow, blankCol - 1)));
-        if (blankRow < this.dimension()) neighbors.add(new Board(exch(board, blankRow, blankCol, blankRow + 1, blankCol)));
-        if (blankCol < this.dimension()) neighbors.add(new Board(exch(board, blankRow, blankCol, blankRow, blankCol + 1)));
+        if (blankRow > 0) neighbors.add(new Board(exch(makeBoardCopy(), blankRow, blankCol, blankRow - 1, blankCol)));
+        if (blankCol > 0) neighbors.add(new Board(exch(makeBoardCopy(), blankRow, blankCol, blankRow, blankCol - 1)));
+        if (blankRow < this.dimension()) neighbors.add(new Board(exch(makeBoardCopy(), blankRow, blankCol, blankRow + 1, blankCol)));
+        if (blankCol < this.dimension()) neighbors.add(new Board(exch(makeBoardCopy(), blankRow, blankCol, blankRow, blankCol + 1)));
 
         return neighbors;
     }
@@ -124,19 +127,55 @@ public class Board {
         return a;
     }
 
+    private int[][] makeBoardCopy() {
+        int[][] copy = new int[board.length][board[0].length];
+        for (int i = 0; i < board.length; i++) {
+            copy[i] = board[i].clone();
+        }
+        return copy;
+    }
+
     // unit tests (not graded)
     public static void main(String[] args) {
-        int[][] blocks = new int[][]{{2,3,1},{4,5,6},{8,7,0}};
-        int[][] equitmentTest = new int[][]{{2,3,1},{4,5,6},{8,7,0}};
+        int[][] blocks = new int[][]{{8,7,1},{4,0,6},{2,3,5}};
+        int[][] equitmentTest = new int[][]{{8,7,1},{4,0,6},{2,3,5}};
         int[][] disequitmentTest = new int[][]{{2,3,1},{4,5,6},{7,8,0}};
+        int[][] goalTest = new int[][]{{1,2,3},{4,5,6},{7,8,0}};
 
         Board b = new Board(blocks);
 
         //funciton test
-        System.out.println("hamning distance is " + b.hamming());
-        System.out.println("manhatan distance is " + b.manhattan());
-
+        System.out.print("dimension() test: ");
+        if (b.dimension() == 3) System.out.println("pass");
+        else System.out.println("failed");
+        System.out.print("hamning() test: ");
+        if (b.hamming() == 6) System.out.print("pass");
+        else System.out.print("failed");
+        System.out.println(" ,hamning distance is " + b.hamming());//return 5
+        System.out.print("mahattan() test : ");
+        if (b.manhattan() == 16) System.out.print("pass");
+        else System.out.print("failed");
+        System.out.println(" ,manhatan distance is " + b.manhattan());//return 5
+        //equal() test
+        System.out.print("equals() test :");
+        if (b.equals(new Board(equitmentTest)) && !b.equals(new Board(disequitmentTest))) System.out.println("pass");
+        else System.out.println("failed");
         //toString() Test
+        System.out.println("toString() test:");
         System.out.println(b);
+        //isGoal() test
+        Board boardGoal = new Board(goalTest);
+        System.out.println("isGoal() test :" + (boardGoal.isGoal() ? " pass" : " failed"));
+        //twin() test
+        System.out.println("twins is ");
+        System.out.println(b.twin());
+        //neighbor() test
+        int num = 1;
+        for (Board n : b.neighbors()) {
+            System.out.println("neighbor " + num + ":");
+            System.out.println(n);
+            num++;
+        }
     }
 }
+
