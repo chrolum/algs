@@ -51,6 +51,7 @@ public class PuzzleChecker {
             Board initial = new Board(tiles);
             Solver solver = new Solver(initial);
             StdOut.println(filename + ": " + solver.moves());
+            System.out.println(solver.solution());
         }
     }
 }

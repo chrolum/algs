@@ -16,7 +16,7 @@ public class Board implements Comparable<Board> {
     // construct a board from an n-by-n array of blocks
     // (where blocks[i][j] = block in row i, column j)
     protected final int[][] board;
-    private int[][] goal= new int[][]{{1,2,3},{4,5,6},{7,8,0}};
+//    private int[][] goal= new int[][]{{1,2,3},{4,5,6},{7,8,0}};
     private int blankRow = -1;
     private int blankCol = -1;
 
@@ -38,11 +38,12 @@ public class Board implements Comparable<Board> {
     }
 
     // number of blocks out of place
+    //support > 3 dimension blocks now
     public int hamming() {
         int dist = 0;
         for (int i = 0; i < this.dimension(); i++) {
             for (int j = 0; j < this.dimension(); j++) {
-                if (board[i][j] != this.goal[i][j] && board[i][j] != 0) dist++;
+                if (board[i][j] != (i * this.dimension() + j + 1) && board[i][j] != 0) dist++;
             }
         }
         return dist;
@@ -99,8 +100,8 @@ public class Board implements Comparable<Board> {
 
         if (blankRow > 0) neighbors.add(new Board(exch(makeBoardCopy(), blankRow, blankCol, blankRow - 1, blankCol)));
         if (blankCol > 0) neighbors.add(new Board(exch(makeBoardCopy(), blankRow, blankCol, blankRow, blankCol - 1)));
-        if (blankRow < this.dimension()) neighbors.add(new Board(exch(makeBoardCopy(), blankRow, blankCol, blankRow + 1, blankCol)));
-        if (blankCol < this.dimension()) neighbors.add(new Board(exch(makeBoardCopy(), blankRow, blankCol, blankRow, blankCol + 1)));
+        if (blankRow < this.dimension()-1) neighbors.add(new Board(exch(makeBoardCopy(), blankRow, blankCol, blankRow + 1, blankCol)));
+        if (blankCol < this.dimension()-1) neighbors.add(new Board(exch(makeBoardCopy(), blankRow, blankCol, blankRow, blankCol + 1)));
 
         return neighbors;
     }
@@ -117,6 +118,7 @@ public class Board implements Comparable<Board> {
             }
             str.append('\n');
         }
+
         return str.toString();
     }
 
