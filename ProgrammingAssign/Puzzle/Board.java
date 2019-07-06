@@ -121,7 +121,7 @@ public class Board implements Comparable<Board> {
 
         return str.toString();
     }
-
+         
     public int compareTo(Board that) {
         return Integer.compare(this.hamming(), that.hamming());
     }
