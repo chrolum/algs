@@ -10,26 +10,60 @@ import edu.princeton.cs.algs4.StdOut;
  * Email:crkylin@gmail.com
  **/
 public class Solver {
-    private MinPQ<SNode> pq = new MinPQ<>();
     Stack<Board> path = new Stack<>();
-    private SNode initalSNode;
+    private boolean isSolvable;
     private int moves = 0;
+
+    // packing the Board node to implement Comparable interface for caclulate the priority
+    private class SNode implements Comparable<SNode>{
+        private final Board board;
+        private SNode prev = null;
+        private int moves = 0;
+        private boolean fromOrignal;
+        private int priority; //cache for avoiding repeated calculation in compareTo()
+
+        public SNode(Board board, SNode prev) {
+            if (board == null || prev == null) throw new NullPointerException();
+            this.board = board;
+            this.prev = prev;
+            this.moves = prev.moves + 1;
+            this.fromOrignal = prev.fromOrignal;
+            this.priority = this.board.manhattan() + this.moves;
+        }
+
+        public SNode(Board board, boolean origninStatus) {//the init constructor
+            if (board == null) throw new NullPointerException();
+            this.board = board;
+            this.fromOrignal = origninStatus;
+            this.priority = this.board.manhattan() + this.moves;
+
+        }
+
+        @Override
+        public int compareTo(SNode that) {
+            return Integer.compare(this.priority, that.priority);
+        }
+    }
 
     // construct a board from an n-by-n array of blocks
     public Solver(Board initial) {
         if (initial == null) throw new IllegalArgumentException();
-        this.initalSNode = new SNode(initial);
-        pq.insert(initalSNode);
+        MinPQ<SNode> pq = new MinPQ<>();
+        pq.insert(new SNode(initial, true));
+        pq.insert(new SNode(initial.twin(), false));
         SNode curr = pq.delMin();
+
         while (!curr.board.isGoal()) {
             for (Board b : curr.board.neighbors()) {
-                if (curr.getPrev() == null || !b.equals(curr.getPrev().board)) {// avoid add prev node into pq
-                    pq.insert(new SNode(b, curr, curr.getMoves() + 1));
+                if (curr.prev == null || !b.equals(curr.prev.board)) {// avoid add prev node into pq
+                    pq.insert(new SNode(b, curr));
                 }
             }
             curr = pq.delMin();
-//            System.out.println("Current priority is " + curr.board.manhattan());
         }
+
+        this.isSolvable = curr.fromOrignal;
+
         //generlate the path and record with a stack
         while (curr != null) {
             this.path.push(curr.board);
@@ -37,53 +71,22 @@ public class Solver {
             curr = curr.prev;
         }
     }
+
     // is the initial board solvable?
     public boolean isSolvable() {
-//        if (initalSNode.board.twin().isGoal()) return false;
-        return true;
+        return this.isSolvable;
     }
+
     // min number of moves to solve initial board; -1 if unsolvable
     public int moves() {
+        if (!isSolvable()) return -1;
         return this.moves;
     }
 
     // sequence of boards in a shortest solution; null if unsolvable
     public Iterable<Board> solution() {
+        if (!isSolvable()) return null;
         return this.path;
-    }
-
-    // packing the Board node to implement Comparable interface for caclulate the priority
-    private class SNode implements Comparable<SNode>{
-        private final Board board;
-        private SNode prev = null;
-        private int moves = 0;
-
-        public SNode(Board board) {
-            this.board = board;
-        }
-
-        public SNode(Board board, SNode prev, int moves) {
-            this.board = board;
-            this.prev = prev;
-            this.moves = moves;
-        }
-
-        public SNode getPrev() {
-            return prev;
-        }
-
-        public void setPrev(SNode prev) {
-            this.prev = prev;
-        }
-
-        public int getMoves() {
-            return this.moves;
-        }
-
-        @Override
-        public int compareTo(SNode that) {
-            return Integer.compare(this.board.manhattan() + this.moves, that.board.manhattan() + that.moves);
-        }
     }
 
     // solve a slider puzzle (given below)
