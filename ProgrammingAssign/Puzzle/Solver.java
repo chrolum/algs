@@ -10,7 +10,7 @@ import edu.princeton.cs.algs4.StdOut;
  * Email:crkylin@gmail.com
  **/
 public class Solver {
-    Stack<Board> path = new Stack<>();
+    private Stack<Board> path = new Stack<>();
     private boolean isSolvable;
     private int moves = 0;
 

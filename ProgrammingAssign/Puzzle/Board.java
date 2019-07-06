@@ -5,17 +5,16 @@ package ProgrammingAssign.Puzzle;
  * Email:crkylin@gmail.com
  **/
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
 /**
  * use a array with 9 length to store the baord status
  */
-public class Board implements Comparable<Board> {
+public class Board {
     // construct a board from an n-by-n array of blocks
     // (where blocks[i][j] = block in row i, column j)
-    protected final int[][] board;
+    private final int[][] board;
 //    private int[][] goal= new int[][]{{1,2,3},{4,5,6},{7,8,0}};
     private int blankRow = -1;
     private int blankCol = -1;
@@ -122,10 +121,6 @@ public class Board implements Comparable<Board> {
         return str.toString();
     }
          
-    public int compareTo(Board that) {
-        return Integer.compare(this.hamming(), that.hamming());
-    }
-
     private int[][] exch(int[][] a, int this_x, int this_y, int that_x, int that_y) {
         int tmp = a[this_x][this_y];
         a[this_x][this_y] = a[that_x][that_y];
