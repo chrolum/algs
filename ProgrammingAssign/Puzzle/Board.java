@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * use a array with 9 length to store the baord status
  */
-public class Board {
+public final class Board {
     // construct a board from an n-by-n array of blocks
     // (where blocks[i][j] = block in row i, column j)
     private final int[][] board;
