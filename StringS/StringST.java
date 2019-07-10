@@ -59,28 +59,61 @@ public class StringST<Value> {
     }
 
     public String longestPrefixOf(String s) {
-
+        int length = searchPrefix(root, s, 0, 0);
+        return s.substring(0, length);
+    }
+    //return the longest prefix length, prefix should be a key
+    private int searchPrefix(Node x, String s, int d, int length) {
+        if (x == null) return length;
+        if (x.val != null) length = d;//meet not empty node and update the length
+        int c = s.charAt(d);
+        return searchPrefix(x.next[c], s, d+1, length);
     }
 
     public Iterable<String> keysWithPrefix(String pre) {
         Queue<String> q = new LinkedList<>();
-        collect(get(root, pre, 0), pre, q);
+        collect(get(root, pre, 0), pre, q);//start from the end node of prefix string key
+        return q;
     }
-
+    //private method for keysWithPrefix, this function collection each node in prefix path
     private void collect(Node x, String pre, Queue<String> q) {
         if (x == null) return;
-        if (x.val != null) q.offer(pre);
+        if (x.val != null) q.offer(pre);//find a key with the same prefix
+        //iterate all child node
         for (char c = 0; c < R; c++) {
             collect(x.next[c], pre + c, q);
         }
     }
 
-    public Iterable<String> keysThatMatch(String s) {
+    // match key with pattern
+    public Iterable<String> keysThatMatch(String pat) {
+        Queue<String> q = new LinkedList<>();
+        collect(root, "", pat, q);
+        return q;
+    }
 
+    /**
+     *
+     * @param x
+     * @param pre the tmp match substring
+     * @param pat the match pattern, which mean while match the '.', it should recurse all the child node
+     * @param q the recorded queue
+     */
+    private void collect(Node x, String pre, String pat, Queue<String> q) {
+        if (x == null) return;
+        int d = pre.length();
+        if (d == pat.length() && x.val != null) q.offer(pre);
+        if (d == pat.length()) return;
+        char next = pat.charAt(d);
+        for (char c = 0; c < R; c++) {
+            if (next == '.' || next == c) {
+                collect(x.next[c], pre + c, pat, q);
+            }
+        }
     }
 
     public Iterable<String> keys() {
-
+        return keysWithPrefix("");//prefix is null,
     }
 }
 
