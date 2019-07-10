@@ -49,10 +49,13 @@ public class Solver {
     public Solver(Board initial) {
         if (initial == null) throw new IllegalArgumentException();
         MinPQ<SNode> pq = new MinPQ<>();
+
+        //insert botj origin search node and its twins into pq for checking out is solvable
         pq.insert(new SNode(initial, true));
         pq.insert(new SNode(initial.twin(), false));
         SNode curr = pq.delMin();
 
+        //use A* algorithm to search the goal status node
         while (!curr.board.isGoal()) {
             for (Board b : curr.board.neighbors()) {
                 if (curr.prev == null || !b.equals(curr.prev.board)) {// avoid add prev node into pq
@@ -80,7 +83,7 @@ public class Solver {
     // min number of moves to solve initial board; -1 if unsolvable
     public int moves() {
         if (!isSolvable()) return -1;
-        return this.moves;
+        return this.moves - 1;
     }
 
     // sequence of boards in a shortest solution; null if unsolvable
