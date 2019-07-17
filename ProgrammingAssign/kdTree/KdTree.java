@@ -3,12 +3,16 @@ package ProgrammingAssign.kdTree;
 import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.RectHV;
 
+import java.util.TreeSet;
+
 /**
  * @author crkylin
  * Email:crkylin@gmail.com
  **/
-public class kdTree {
-    public kdTree() {
+public class KdTree {
+    private TreeSet<Point2D> set;
+
+    public KdTree() {
 
     }
 

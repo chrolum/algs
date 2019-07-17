@@ -3,7 +3,7 @@ package BalanceSearchTree;
 public interface SymbolTable<Key extends Comparable<Key>, Value> {
     public Value get(Key key);
 
-    public void insert(Key key, Value val);
+    public void put(Key key, Value val);
 
     public void delet(Key key);
 

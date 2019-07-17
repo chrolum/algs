@@ -1,3 +1,4 @@
+package ProgrammingAssign.kdTree;
 /******************************************************************************
  *  Compilation:  javac KdTreeVisualizer.java
  *  Execution:    java KdTreeVisualizer

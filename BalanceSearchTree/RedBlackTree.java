@@ -1,5 +1,7 @@
 package BalanceSearchTree;
 
+import java.util.TreeMap;
+
 /**
  * @author crkylin
  * Email:crkylin@gmail.com
@@ -7,6 +9,7 @@ package BalanceSearchTree;
 public class RedBlackTree<Key extends Comparable<Key>, Value> implements SymbolTable {
     private static final boolean RED = true;
     private static final boolean BLACK = false;
+    TreeMap
 
     private Node root;
 
@@ -33,8 +36,8 @@ public class RedBlackTree<Key extends Comparable<Key>, Value> implements SymbolT
     }
 
     @Override
-    public void insert(Key key, Value val) {
-        root = put(root, key, val);
+    public void put(Key key, Value val) {
+        this.root = put(root, key, val);
     }
 
     private Node put(Node h, Key key, Value val) {
@@ -96,8 +99,8 @@ public class RedBlackTree<Key extends Comparable<Key>, Value> implements SymbolT
         assert !isRed(h);
         assert isRed(h.left);
         assert isRed(h.right);
-        h.color = RED;
+        h.color = RED;//the mid key was up to the parent node, it at least a 3-node
         h.left.color = BLACK;
-        h.right.color = RED;
+        h.right.color = BLACK;
     }
 }

@@ -1,3 +1,4 @@
+package ProgrammingAssign.kdTree;
 /******************************************************************************
  *  Compilation:  javac KdTreeGenerator.java
  *  Execution:    java KdTreeGenerator n
