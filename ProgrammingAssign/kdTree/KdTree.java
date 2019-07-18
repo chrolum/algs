@@ -17,7 +17,7 @@ public class KdTree {
     }
 
     public boolean isEmpty() {
-
+        return set.isEmpty();
     }
 
     public int size() {
